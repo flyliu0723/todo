@@ -10,6 +10,35 @@
   "rules": {
     "ordered-imports": false,
     "jsx-no-lambda": false,
-    "object-literal-sort-keys": false
+    "object-literal-sort-keys": false,
+    "no-console": false,
+    "prefer-const": false,
+    "jsdoc-format": false,
+    "completed-docs": false,
+    "no-empty-interface": false,
+    "no-empty": false,
+    "no-inferred-empty-object-type": false,
+    "no-import-side-effect": false,
+    "class-name": false,
+    "variable-name": false,
+    "curly": false,
+    "no-shadowed-variable": false
+  },
+  "jsRules": {
+    "ordered-imports": false,
+    "jsx-no-lambda": false,
+    "object-literal-sort-keys": false,
+    "no-console": false,
+    "prefer-const": false,
+    "no-import-side-effect": false,
+    "class-name": false,
+    "variable-name": false,
+    "curly": false,
+    "no-shadowed-variable": false,
+    "jsdoc-format": false,
+    "completed-docs": false,
+    "no-empty-interface": false,
+    "no-empty": false,
+    "no-inferred-empty-object-type": false
   }
 }
