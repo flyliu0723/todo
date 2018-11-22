@@ -61,5 +61,38 @@ router.post('/user/regist', (req, res) => {
             }
         })
 })
+/**
+ * @description 获取todo列表
+ */
+router.get('/todo/list', (req, res) => {
+    let sql = `select * from todo`
+    sql += req.query.tag === ''
+            ? '' : ` where tag = ${req.query.tag}`
+    sql += req.query.sort === '' ? ` order by startDate desc` : `order by ${req.query.sort} desc`
+    
+    db.query(sql)
+        .then(d => {
+            res.send({
+                code: 1100,
+                msg: '成功',
+                data: d
+            })
+            
+        })
+})
+/**
+ * @description 添加todo列
+ */
+router.get('/todo/addlist', (req, res) => {
+    let sql = `insert into todo (todo, startDate, endDate, tag, priority) values("${req.query.todo}", "${req.query.startDate}", "${req.query.endDate}", "${req.query.tag}", "${req.query.priority}")`
+    db.query(sql)
+        .then(d => {
+            res.send({
+                code: d.affectedRows === 1 ? 1100 : 1200,
+                msg: '',
+                data: d.affectedRows === 1 ? '添加成功' : '添加失败，稍后重试'
+            })
+        })
+})
 
 module.exports = router;

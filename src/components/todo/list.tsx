@@ -31,6 +31,7 @@ const Lists = styled.ul`
         span{
             color: blue;
             border: none !important;
+            cursor: pointer;
         }
         span:nth-child(1){
             margin-right: 0.15rem;
@@ -44,22 +45,40 @@ const Lists = styled.ul`
     }
     
 `
+interface Iprops {
+    list: any
+}
 
 
+export default class List extends React.Component<Iprops, {}> {
+    constructor(props: Iprops) {
+        super(props)
 
-export default class List extends React.Component<{}, {}> {
+    } 
     
     public render() {
+        const {list} = this.props
         return <Lists>
-            <li className="todo-list">
-                <span/>
-                <span>todo项目</span>
-            </li>
+            {
+                list.map((d: any, i: number) => {
+                    return <li className="todo-list" key={i}>
+                        <span/>
+                        <span>{d.todo}</span>
+                    </li>
+                })
+            }
 
-            <li className="todo-add">
+            <li className="todo-add" onClick={this.addTodo}>
                 <span>+</span>
                 <span>添加任务</span>
             </li>
         </Lists>
+    }
+    /**
+     * @description 添加todo
+     * @todo 需求 弹出框填写相关信息
+     */
+    public addTodo = () => {
+
     }
 }

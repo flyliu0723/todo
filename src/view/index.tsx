@@ -1,6 +1,6 @@
 import * as React from 'react'
 // import { NavLink  } from 'react-router-dom'
-import * as cookie from '../lib/cookies'
+import { loginStatus } from '../lib/tools'
 import http from '../lib/http'
 import Header from '../components/header'
 import Bottom from '../components/bottom'
@@ -15,12 +15,24 @@ import FlashList from '../components/flash/flash-list'
 class Index extends React.Component<{}, {}> {
     public state = {
         inTab: 'todo',
-        tabTitle: '待办'
+        tabTitle: '待办',
+        todoList: []
+    }
+    public componentWillMount() {
+        if(!loginStatus()) {
+            window.location.href = '/login'
+        }
     }
     public componentDidMount() {
-        http.get('/', {name: 'get'}).then((d: any) => {
-            // console.log(d)
+        http.get('/todo/list', {
+            tag: '',
+            sort: ''
         })
+            .then((d: any) => {
+                this.setState({
+                    todoList: d.data
+                })
+            })
     }
     public render() {
         return <div>
@@ -29,7 +41,7 @@ class Index extends React.Component<{}, {}> {
                         this.state.inTab === 'todo' && 
                             <div>
                                 <Banner/>
-                                <List/>
+                                <List list={this.state.todoList}/>
                             </div>
                     }
                     {
@@ -42,9 +54,6 @@ class Index extends React.Component<{}, {}> {
                  </div>
     }
     public changeTab = (inTab: string, tabTitle: string) => {
-        if(inTab === 'my' && !cookie.getCookie('ttm_token')) {
-            window.location.href = '/login'
-        }
         this.setState({inTab, tabTitle})
     }
 }
