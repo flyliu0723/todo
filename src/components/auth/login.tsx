@@ -25,6 +25,7 @@ const Logins = styled.div`
         color: #fff;
         font-size: 0.16rem;
         border-radius: 0.04rem;
+        cursor: pointer;
     }
     p{
         width: 100%;
@@ -32,9 +33,11 @@ const Logins = styled.div`
         span{
             font-size: 0.12rem;
             color: #999;
+            cursor: pointer;
         }
         .forget{
             float: right;
+            cursor: pointer;
         }
         .err-msg{
             color: #d81e06;

@@ -31,6 +31,7 @@ const Lists = styled.ul`
         span{
             color: blue;
             border: none !important;
+            cursor: pointer;
         }
         span:nth-child(1){
             margin-right: 0.15rem;
@@ -44,6 +45,9 @@ const Lists = styled.ul`
     }
     
 `
+interface Iprops {
+    list: any
+}
 
 interface IProps {
     todoList?: any
@@ -73,10 +77,17 @@ export default class List extends React.Component<IProps, IState> {
             }
             
 
-            <li className="todo-add">
+            <li className="todo-add" onClick={this.addTodo}>
                 <span>+</span>
                 <span>添加任务</span>
             </li>
         </Lists>
+    }
+    /**
+     * @description 添加todo
+     * @todo 需求 弹出框填写相关信息
+     */
+    public addTodo = () => {
+
     }
 }

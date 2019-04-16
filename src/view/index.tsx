@@ -1,6 +1,6 @@
 import * as React from 'react'
 // import { NavLink  } from 'react-router-dom'
-import * as cookie from '../lib/cookies'
+import { loginStatus } from '../lib/tools'
 import http from '../lib/http'
 import Header from '../components/header'
 import Bottom from '../components/bottom'
@@ -63,9 +63,6 @@ class Index extends React.Component<{}, {}> {
      * @memberof Index
      */
     public changeTab = (inTab: string, tabTitle: string) => {
-        if(inTab === 'my' && !cookie.getCookie('ttm_token')) {
-            window.location.href = '/login'
-        }
         this.setState({inTab, tabTitle})
     }
 }
