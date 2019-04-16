@@ -5,6 +5,7 @@ let app = Express();
 let http = require('http');
 
 let routers = require('./routers')
+let todo = require('./todo')
 
 app.use(bodyParser.json())
 
@@ -23,7 +24,8 @@ app.all("*",function(req,res,next){
         
 })
 
-app.use('/', routers)
+app.use('/user', routers)
+app.use('/todo', todo)
 app.use((req, res, next) => {
     res.status(404).send('error')
     next()

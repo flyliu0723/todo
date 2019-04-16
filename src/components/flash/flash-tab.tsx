@@ -12,10 +12,10 @@ const Flashs = styled.div`
         margin: 0.48rem 0.33rem;
     }
 `
-interface Iprops {
+interface IProps {
     isAdd?: boolean
 }
-interface Istate {
+interface IState {
     backColor: any
 }
 
@@ -23,11 +23,11 @@ interface Istate {
  * @todo 颜色也应该是一起保存的
  * 
  */
-export default class FlashTab extends React.Component<Iprops, Istate> {
+export default class FlashTab extends React.Component<IProps, IState> {
     public static defaultProps = { 
         isAdd: false
     }
-    constructor(props: Iprops) {
+    constructor(props: IProps) {
         super(props)
         this.state = {
             backColor: ['#1296db', '#e46a5b', '#7dc5eb', '#a686ba']

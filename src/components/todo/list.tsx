@@ -45,16 +45,33 @@ const Lists = styled.ul`
     
 `
 
+interface IProps {
+    todoList?: any
+}
+interface IState {
 
+}
 
-export default class List extends React.Component<{}, {}> {
+export default class List extends React.Component<IProps, IState> {
+    constructor(props: IProps){
+        super(props)
+        this.state = {
+
+        }
+    }
     
     public render() {
+        const {todoList} = this.props
         return <Lists>
-            <li className="todo-list">
-                <span/>
-                <span>todo项目</span>
-            </li>
+            {
+                todoList.map((d: any, i: number) => {
+                    return <li className="todo-list" key={i}>
+                        <span />
+                        <span>{d.todo}</span>
+                    </li>
+                })
+            }
+            
 
             <li className="todo-add">
                 <span>+</span>

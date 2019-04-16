@@ -18,7 +18,7 @@ const Logins = styled.div`
         width: 100%;
         height: 0.4rem;
         line-height: 0.4rem;
-        background: #d81e06;
+        background: #80b8ffd6;
         border: none;
         outline: none;
         margin: 0.5rem 0 0;

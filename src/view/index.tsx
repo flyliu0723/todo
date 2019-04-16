@@ -7,20 +7,30 @@ import Bottom from '../components/bottom'
 
 import Banner from '../components/todo/banner'
 import List from '../components/todo/list'
+import Add from '../components/todo/add'
 
 import FlashList from '../components/flash/flash-list'
 
 
 
 class Index extends React.Component<{}, {}> {
-    public state = {
+    public state:{
+        inTab: string,
+        tabTitle: string,
+        todoList: any
+    } = {
         inTab: 'todo',
-        tabTitle: '待办'
+        tabTitle: '待办',
+        todoList: []
     }
     public componentDidMount() {
-        http.get('/', {name: 'get'}).then((d: any) => {
-            // console.log(d)
-        })
+        document.getElementsByTagName('title')[0].text = this.state.tabTitle
+        http.get('/todo/list', {status: -1})
+            .then((d: any)=> {
+                this.setState({
+                    todoList: d.data
+                })
+            })
     }
     public render() {
         return <div>
@@ -29,18 +39,29 @@ class Index extends React.Component<{}, {}> {
                         this.state.inTab === 'todo' && 
                             <div>
                                 <Banner/>
-                                <List/>
+                                <List
+                                    todoList={this.state.todoList}
+                                />
                             </div>
                     }
+
+                    <Add />
+
                     {
                         this.state.inTab === 'flash' && 
                             <FlashList/>
                     }
                     
 
+
                     <Bottom inTab={this.state.inTab} changeTab={this.changeTab}/>
                  </div>
     }
+    /**
+     *@description 切换tab
+     *
+     * @memberof Index
+     */
     public changeTab = (inTab: string, tabTitle: string) => {
         if(inTab === 'my' && !cookie.getCookie('ttm_token')) {
             window.location.href = '/login'

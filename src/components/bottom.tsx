@@ -40,16 +40,16 @@ const Bottoms = styled.div`
         }
     }
 `
-interface Iprops {
+interface IProps {
     inTab: string,
     changeTab: any
 }
-interface Istate {
+interface IState {
     inTab: string
 }
 
-export default class Bottom extends React.Component<Iprops, Istate> {
-    constructor(props: Iprops){
+export default class Bottom extends React.Component<IProps, IState> {
+    constructor(props: IProps){
         super(props)
         this.state = {
             inTab: 'todo'

@@ -43,21 +43,21 @@ const Head = styled.div`
         }
     }
 `
-interface Iprops {
+interface IProps {
     title?: string,
     showMenus?: boolean,
     showBack?: boolean
 }
-interface Istate {
+interface IState {
     showMenus: boolean
 }
 
-export default class Header extends React.Component<Iprops, Istate> {
+export default class Header extends React.Component<IProps, IState> {
     public static defaultProps = { 
         showMenus: true,
         showBack: true,
     }
-    constructor(props: Iprops) {
+    constructor(props: IProps) {
         super(props)
         this.state = {
             showMenus: false
