@@ -1,6 +1,6 @@
 import * as React from 'react'
 // import { NavLink  } from 'react-router-dom'
-import { loginStatus } from '../lib/tools'
+// import { loginStatus } from '../lib/tools'
 import http from '../lib/http'
 import Header from '../components/header'
 import Bottom from '../components/bottom'

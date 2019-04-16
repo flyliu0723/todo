@@ -45,9 +45,6 @@ const Lists = styled.ul`
     }
     
 `
-interface Iprops {
-    list: any
-}
 
 interface IProps {
     todoList?: any
