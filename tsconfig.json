@@ -26,7 +26,6 @@
     "acceptance-tests",
     "webpack",
     "jest",
-    "src/setupTests.ts",
-    "react-native/globals.d.ts"
+    "src/setupTests.ts"
   ]
 }
