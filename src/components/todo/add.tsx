@@ -95,7 +95,7 @@ export default class Banner extends React.Component<{}, {}> {
         </Add>
     }
     public changDate = (t: any, data: any) => {
-
+        
     }
     public onOk = (value: any) => {
 
