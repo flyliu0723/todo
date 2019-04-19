@@ -17,11 +17,13 @@ class Index extends React.Component<{}, {}> {
     public state:{
         inTab: string,
         tabTitle: string,
-        todoList: any
+        todoList: any,
+        showAdd: boolean
     } = {
         inTab: 'todo',
         tabTitle: '待办',
-        todoList: []
+        todoList: [],
+        showAdd: false
     }
     public componentDidMount() {
         document.getElementsByTagName('title')[0].text = this.state.tabTitle
@@ -41,11 +43,15 @@ class Index extends React.Component<{}, {}> {
                                 <Banner/>
                                 <List
                                     todoList={this.state.todoList}
+                                    addTodo={() => {this.setState({showAdd: true})}}
                                 />
                             </div>
                     }
-
-                    <Add />
+                    {
+                        this.state.showAdd && <Add 
+                            addTodo={() => {this.setState({showAdd: false})}}
+                        />
+                    }
 
                     {
                         this.state.inTab === 'flash' && 

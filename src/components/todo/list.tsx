@@ -47,7 +47,8 @@ const Lists = styled.ul`
 `
 
 interface IProps {
-    todoList?: any
+    todoList?: any,
+    addTodo: any
 }
 interface IState {
 
@@ -85,6 +86,6 @@ export default class List extends React.Component<IProps, IState> {
      * @todo 需求 弹出框填写相关信息
      */
     public addTodo = () => {
-
+        this.props.addTodo()
     }
 }
