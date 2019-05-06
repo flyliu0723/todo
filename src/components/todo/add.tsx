@@ -1,9 +1,11 @@
 import * as React from 'react'
 import styled from 'styled-components'
+import * as moment from 'moment'
 import http from '../../lib/http'
 import { DatePicker, Select } from 'antd'
 import locale from 'antd/lib/date-picker/locale/zh_CN'
 import "antd/dist/antd.css"
+import {tips} from 'react-components'
 
 const Option = Select.Option
 
@@ -106,12 +108,17 @@ const Add = styled.div`
             border-radius: 0.04rem;
             cursor: pointer;
         }
+        .del-btn{
+            background: #ff4d4f;
+            margin-left: 0.1rem;
+        }
     }
 `
 
 
 interface IProps {
-    addTodo: any
+    addTodo: any,
+    todoContent: any
 }
 interface IState {
     tags: any,
@@ -131,6 +138,16 @@ export default class Banner extends React.Component<IProps, IState> {
         }
     }
     public componentDidMount() {
+        if(this.props.todoContent !== ''){
+            this.setState({
+                todo: {
+                    content: this.props.todoContent.todo,
+                    date: new Date(parseInt(this.props.todoContent.endDate, 0)).toLocaleString().replace('上午', '').replace('下午', ''),
+                    tags: this.props.todoContent.tag.split('_'),
+                    priority: this.props.todoContent.priority
+                }
+            })
+        }
         const tags = [];
         for (let i = 10; i < 36; i++) {
             tags.push(<Option key={i.toString(36) + i}>{i.toString(36) + i}</Option>);
@@ -140,13 +157,20 @@ export default class Banner extends React.Component<IProps, IState> {
         })
     }
     public render() {
-        return <Add>
-            <div className="content">
+        const dateFormat = 'YYYY-MM-DD HH:mm:ss'
+        return <Add
+            onClick={() => {this.props.addTodo()}}
+        >
+            <div 
+                className="content"
+                onClick={(e: any) => {e.stopPropagation()}}
+            >
                 <p className="title">添加任务</p>
                 <input 
                     type="text"
                     placeholder="添加一个任务"
                     className="todo-content"
+                    value={this.state.todo.content}
                     onChange={(e: any) => this.inputChange(e)}
                 />
                 <span className="date-tab" id='dateTab'>
@@ -154,6 +178,8 @@ export default class Banner extends React.Component<IProps, IState> {
                         locale={locale}
                         showTime={true}
                         placeholder="截至日期"
+                        defaultValue={moment(this.props.todoContent !== '' ? new Date(parseInt(this.props.todoContent.endDate, 0)).toLocaleString().replace('上午', '').replace('下午', '') : new Date())}
+                        format={dateFormat}
                         getCalendarContainer={() => 
                             document.getElementById("dateTab") || document.body
                         }
@@ -161,20 +187,33 @@ export default class Banner extends React.Component<IProps, IState> {
                     /> 
                 </span>
                 <span className="date-tab">
-                    <Select
-                        mode="tags"
-                        style={{ width: '100%' }}
-                        placeholder="添加标签"
-                        onChange={(value: any) => this.handleChangeTags(value)}
-                    >
-                        {this.state.tags}
-                    </Select>
+                    {
+                        this.props.todoContent !== '' ?
+                            <Select
+                                mode="tags"
+                                style={{ width: '100%' }}
+                                placeholder="添加标签"
+                                defaultValue={ this.props.todoContent.tag.split('_')}
+                                onChange={(value: any) => this.handleChangeTags(value)}
+                            >
+                                {this.state.tags}
+                            </Select> :
+                            <Select
+                                mode="tags"
+                                style={{ width: '100%' }}
+                                placeholder="添加标签"
+                                onChange={(value: any) => this.handleChangeTags(value)}
+                            >
+                                {this.state.tags}
+                            </Select>
+                    }
+                    
                 </span>
                 <span className="date-tab">
                     <Select 
                         placeholder="优先级从低到高(0-3)"
+                        defaultValue={this.props.todoContent !== '' ? this.props.todoContent.priority : '0'}
                         onChange={(value: any) => this.handleChangePriority(value)}>
-                        <Option value="">优先级</Option>
                         <Option value="0">0</Option>
                         <Option value="1">1</Option>
                         <Option value="2">2</Option>
@@ -185,19 +224,36 @@ export default class Banner extends React.Component<IProps, IState> {
                     className="add-btn"
                     onClick={() => this.addTodo()}
                 >
-                    添加
+                    {this.props.todoContent !== '' ? '修改' : '添加'}
                 </button>
+                {
+                    this.props.todoContent !== '' && 
+                        <button 
+                            className="add-btn del-btn"
+                            onClick={() => this.delTodo()}
+                        >
+                            删除
+                        </button>
+                }
+
             </div>
         </Add>
     }
+    /**
+     *@description 内容输入框改变
+     *
+     * @memberof Banner
+     */
     public inputChange = (e: any) => {
-        console.log(e.target.value)
         let todo = Object.assign(this.state.todo)
         todo.content = e.target.value
         this.setState({
             todo
         })
     }
+    /**
+     * @description 选择日期
+     */
     public onOk = (value: any) => {
         let todo = Object.assign(this.state.todo)
         todo.date = Date.parse(value._d)
@@ -205,26 +261,55 @@ export default class Banner extends React.Component<IProps, IState> {
             todo
         })
     }
+    /**
+     *@description 选择优先级
+     *
+     * @memberof Banner
+     */
     public handleChangePriority = (value: any) => {
-        console.log(value)
         let todo = Object.assign(this.state.todo)
         todo.priority = value
         this.setState({
             todo
         })
     }
+    /**
+     * @description 添加删除标签
+     */
     public handleChangeTags = (value: any) => {
-        console.log(value)
         let todo = Object.assign(this.state.todo)
         todo.tags = value
         this.setState({
             todo
         })
     }
+    /**
+     *@description 添加或编辑todo
+     *
+     * @memberof Banner
+     */
     public addTodo = () => {
-        console.log(this.state.todo)
-        http.post('/todo/add', this.state.todo)
-            .then(d => {
+        let url = this.props.todoContent === '' ? '/todo/add' : '/todo/update'
+        let param = Object.assign({}, this.state.todo)
+        if(this.props.todoContent !== ''){
+            param.id = this.props.todoContent.id
+            param.date = param.date.toString().indexOf('/') > -1 ? Date.parse(param.date) : param.date
+        }
+        http.post(url, param)
+            .then((d: any) => {
+                tips(d.msg)
+                this.props.addTodo()
+            })
+    }
+    /**
+     *@description 删除todo
+     *
+     * @memberof Banner
+     */
+    public delTodo = () => {
+        http.get('/todo/delete', {id: this.props.todoContent.id})
+            .then((d: any) => {
+                tips(d.msg)
                 this.props.addTodo()
             })
     }

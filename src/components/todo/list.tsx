@@ -48,7 +48,8 @@ const Lists = styled.ul`
 
 interface IProps {
     todoList?: any,
-    addTodo: any
+    addTodo: any,
+    editTodo: any
 }
 interface IState {
 
@@ -67,7 +68,11 @@ export default class List extends React.Component<IProps, IState> {
         return <Lists>
             {
                 todoList.map((d: any, i: number) => {
-                    return <li className="todo-list" key={i}>
+                    return <li 
+                        className="todo-list" 
+                        key={i}
+                        onClick={() => this.props.editTodo(d.id)}
+                    >
                         <span />
                         <span>{d.todo}</span>
                     </li>
